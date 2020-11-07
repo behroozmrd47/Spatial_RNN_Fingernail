@@ -1,5 +1,15 @@
 # Implementation of U-Net Residual Coupled w [Spatial RNN Module](https://github.com/behroozmrd47/keras-spatial-rnn)
 
+## Table of contents
+<!--ts-->
+   * [Introduction](#Introduction)
+   * [Data](#Data)
+   * [Model](#Model)
+   * [Training](#Training)
+   * [Results](#Results)
+   * [Future improvements](#Future-improvements)
+<!--te-->
+
 ##Introduction
 
 This repo investigates the application and effectiveness of CR-Unet network suggested by 
@@ -124,3 +134,8 @@ The ground truth mask along side predicted masks overlayed on image are plotted 
 below. ![img/Result-mask.png](img/Result-mask.png) <br>
 
 **For more detailed result, see [Fingernail_detection_4.ipynb](Fingernail_detection_4.ipynb).**   
+
+# Future improvements
+* Normalizing image pixel data   
+* Check accuracy and effectivity of Spatial RNN Module for datasets containing large volume of data
+* Study applicability of Spatial RNN Module for datasets of 3D images
