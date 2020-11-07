@@ -1,6 +1,7 @@
-# Implementation of U-Net Residual + [Spatial RNN module](https://github.com/behroozmrd47/keras-spatial-rnn)
+# Implementation of U-Net Residual Coupled w [Spatial RNN Module](https://github.com/behroozmrd47/keras-spatial-rnn)
 
 ##Introduction
+
 This repo investigates the application and effectiveness of CR-Unet network suggested by 
 [*Li et. al.*](https://pubmed.ncbi.nlm.nih.gov/31603808/) for image segmentation tasks. The paper suggest coupling 
 U-Net2D network, used for image segmentation, with spatial RNN modules as the shortcut link between encoding 
@@ -30,7 +31,7 @@ Below are the networks and related research papers.
 ### Sources
 Two sets of data was used for this analysis listed below:
 
-* [194 images with blue backgrounds] (https://github.com/Golbstein/Fingernails-Segmentation) hereafter called 
+* [194 images with blue backgrounds](https://github.com/Golbstein/Fingernails-Segmentation) hereafter called 
 Dataset 1 
 * 52 images in different postures & backgrounds hereafter called Dataset 2
 
@@ -44,22 +45,27 @@ no nail polish. load_image_data_1 function from Process_Raw_Input.py module was 
 Second dataset contains 52 images of fingernail taken with various postures, with various backgrounds and some with nail polish.  
 load_image_data_2 function from Process_Raw_Input.py module was used for importing and processing this dataset.
 
-The raw images from both datasets have various sizes but images were resized to same dimensions before starting the training
-process. Number of images are way not enough for DNN learning, but the results obtained with limited available datasets, 
-is yet another proof on the power and capability of investigated networks.
+The raw images from both datasets have various sizes but all images were resized to 160 x 192.
+Number of images are way not enough for DNN learning, but the results obtained with limited available datasets, 
+is yet another proof on the potential of studied networks.
 
-### Model
-Three models are investigated here listed. All these models have been used for bio-mdeila image segmentation and related 
+## Model
+Three models are investigated here listed. All these models have been used for bio-medical image segmentation and related 
 research articles are provided above. 
 
 * U-Net2D (U-Net2D)*:<br>
-![img/Unet2D.png](img/Unet2D.png) [source](https://towardsdatascience.com/unet-line-by-line-explanation-9b191c76baf5) <br> 
-* U-Net2D Residual (U-Net2D-Res)*: <br>
-![img/Unet2D-Res.png](img/Unet2D-Res.png) [source](https://medium.com/@nishanksingla/unet-with-resblock-for-semantic-segmentation-dd1766b4ff66) <br>
-* CR-UNet Residual (U-Net2D-Res-SRNN-HW)*: <br>
-![img/Unet2D-Res-SRNN.png](img/Unet2D-Res-SRNN.png) [source](https://pubmed.ncbi.nlm.nih.gov/31603808/) <br>
-**The images shown above are stock images and do not match exactly with the models used. The models used for this study
-are only different with images above in number of filters and weights throughout the encoding and decoding steps.* 
+![img/Unet2D.png](img/Unet2D.png)<br>
+[source](https://towardsdatascience.com/unet-line-by-line-explanation-9b191c76baf5) <br> 
+
+* U-Net2D Residual (U-Net2D-Res)*:<br>
+![img/Unet2D-Res.png](img/Unet2D-Res.png)<br>
+[source](https://medium.com/@nishanksingla/unet-with-resblock-for-semantic-segmentation-dd1766b4ff66) <br>
+
+* CR-UNet Residual (U-Net2D-Res-SRNN-HW)*:<br>
+![img/Unet2D-Res-SRNN.png](img/Unet2D-Res-SRNN.png)<br>
+[source](https://pubmed.ncbi.nlm.nih.gov/31603808/) <br>
+**The images shown above are stock images and do not match exactly with the models used. The models used are 
+different with images above only in number of filters and weights throughout the encoding and decoding steps.* 
 
 For investigation purposes another version of CR-UNet Residual model equipped by CNN layers with fewer filters is 
 build which has lower volume of weights comparing to original model hence called Unet2D-Res-SRNN-LW. The general 
@@ -69,7 +75,7 @@ has fewer weights.
 All models have been implemented with Keras functional API. Output from the network is a single layer mask same size as 
 input dimensions with mask pixels are in \[0, 1\] range.  
 
-### Training
+## Training
 
 About 10% of datasets are set aside for testing and evaluation and rest are used for training.
 The model is trained for 220 epochs with batch size of 2. 
@@ -88,22 +94,21 @@ Evaluation is done by binarizing output mask with threshold of 0.5 and then the
  is calculated. Same process is used as the metric during the training process. Training is done using 
  [Google Colab GPUs](https://colab.research.google.com/notebooks/gpu.ipynb).
 
----
-### Results
+## Results
 
 The final evaluation results are shown below in case of various training cases. 
 
-|Model             |Dataset Combination  |Input Image Size |Evaluation  Dice Score |Evaluation  Dice Score |
-|------------------|---------------------|-----------------|:---------:|:--------:|
-|                  |                     |                 |BCE-Dice Loss Func|BCE Loss Func|
-|U-Net2D            |Dataset 1            |160 x 192       |0.82     |0.84    |
-|U-Net2D-Res        |Dataset 1            |160 x 192       |0.93     |0.92    |
-|U-Net2D-Res-SRNN-HW|Dataset 1            |160 x 192       |0.94     |0.94    |
-|U-Net2D-Res-SRNN-LW|Dataset 1            |160 x 192       |0.85     |0.85    |
-|U-Net2D            |Dataset 1 + Dataset 2|160 x 192       |0.61     |0.70    |
-|U-Net2D-Res        |Dataset 1 + Dataset 2|160 x 192       |0.84     |0.87    |
-|U-Net2D-Res-SRNN-HW|Dataset 1 + Dataset 2|160 x 192       |0.83     |0.87    |
-|U-Net2D-Res-SRNN-LW|Dataset 1 + Dataset 2|160 x 192       |0.71     |0.74    |
+|Model             |Dataset Combination   |Evaluation  Dice Score |Evaluation  Dice Score |
+|------------------|--------------|:-------:|:------:|
+|                  |              |BCE-Dice Loss|BCE Loss|
+|U-Net2D            |Dataset 1    |0.82     |0.84    |
+|U-Net2D-Res        |Dataset 1    |0.93     |0.92    |
+|U-Net2D-Res-SRNN-HW|Dataset 1    |0.94     |0.94    |
+|U-Net2D-Res-SRNN-LW|Dataset 1    |0.85     |0.85    |
+|U-Net2D            |Dataset 1 + 2|0.61     |0.70    |
+|U-Net2D-Res        |Dataset 1 + 2|0.84     |0.87    |
+|U-Net2D-Res-SRNN-HW|Dataset 1 + 2|0.83     |0.87    |
+|U-Net2D-Res-SRNN-LW|Dataset 1 + 2|0.71     |0.74    |
 
 The U-Net2D Residual network equipped with spatial RNN module (U-Net2D-Res-SRNN-HW)
 yielded the best outcome, 94% and 87% for training on Dataset 1 and both datasets combined, respectively.
@@ -116,6 +121,6 @@ The dice score metric in case of test dataset throughout the training process is
 ![img/Result-chart.png](img/Result-chart.png) <br>
 
 The ground truth mask along side predicted masks overlayed on image are plotted for two test cases shown 
-below. ![img/a.png](img/a.png) <br>
+below. ![img/Result-mask.png](img/Result-mask.png) <br>
 
 **For more detailed result, see [Fingernail_detection_4.ipynb](Fingernail_detection_4.ipynb).**   
